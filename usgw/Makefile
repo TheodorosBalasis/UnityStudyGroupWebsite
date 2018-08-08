@@ -1,4 +1,4 @@
-.PHONY: install dev test clean relclean
+.PHONY: dev test clean relclean
 
 all:
 	@echo read Makefile for useful targets
