@@ -14,7 +14,6 @@ setuptools.setup(
     zip_safe=False,
     install_requires=[
         'flask',
-        'mysql-connector==2.1.6',
     ],
     entry_points={'console_scripts':[
         'usgw-config=usgw.bin.config:main',

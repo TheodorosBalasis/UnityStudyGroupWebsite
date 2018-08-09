@@ -1,9 +1,6 @@
-import os, json
-from datetime import datetime
-import mysql.connector as mysql
-import flask
 from flask import render_template as render
 from usgw.config import Config
+import flask, os
 
 config = Config()
 app    = flask.Flask(__name__)

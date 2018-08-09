@@ -3,22 +3,44 @@
 all:
 	@echo read Makefile for useful targets
 
-dev:
+
+################################################
+### WINDOWS TARGETS
+################################################
+wdev:
 	@echo "==> setting up dev virtualenv"
 	@if [ ! -d venv ]; then virtualenv venv; fi
-	@if [ "$(uname)" == "Linux" ]; then	\
-		./venv/bin/pip install -e .;	\
-	elif [ "$(uname)" == MINGW* ]; then	\
-		./venv/Scripts/pip install -e .;\
-	fi
+	@./venv/Scripts/pip install -e .
 	@mkdir -p venv/etc
 	@cp local.conf venv/etc/usgw.conf
 
-test: dev
+wtest: wdev
+	@echo "==> starting dev server on http://localhost:5000"
+	@FLASK_APP=usgw/app.py \
+        FLASK_DEBUG=1 \
+        ./venv/Scripts/flask run --host=0.0.0.0 --port=5000
+################################################
+
+
+
+################################################
+### LINUX TARGETS
+################################################
+ldev:
+	@echo "==> setting up dev virtualenv"
+	@if [ ! -d venv ]; then virtualenv venv; fi
+	@./venv/bin/pip install -e .
+	@mkdir -p venv/etc
+	@cp local.conf venv/etc/usgw.conf
+
+ltest: ldev
 	@echo "==> starting dev server on http://localhost:5000"
 	@FLASK_APP=usgw/app.py \
         FLASK_DEBUG=1 \
         ./venv/bin/flask run --host=0.0.0.0 --port=5000
+
+################################################
+
 
 clean:
 	@echo "==> cleaning working files"
