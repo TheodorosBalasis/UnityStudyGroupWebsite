@@ -6,7 +6,11 @@ all:
 dev:
 	@echo "==> setting up dev virtualenv"
 	@if [ ! -d venv ]; then virtualenv venv; fi
-	@./venv/bin/pip install -e .
+	@if [ "$(uname)" == "Linux" ]; then	\
+		./venv/bin/pip install -e .;	\
+	elif [ "$(uname)" == MINGW* ]; then	\
+		./venv/Scripts/pip install -e .;\
+	fi
 	@mkdir -p venv/etc
 	@cp local.conf venv/etc/usgw.conf
 
