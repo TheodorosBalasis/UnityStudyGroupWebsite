@@ -1,0 +1,5 @@
+# Directories
+build/
+dist/
+usgw.egg-info/
+venv/
