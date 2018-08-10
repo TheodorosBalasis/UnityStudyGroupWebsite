@@ -1,5 +1,6 @@
 from flask import render_template as render
 from usgw.config import Config
+from usgw.db import get_db
 import flask, os
 
 config = Config()
@@ -8,7 +9,8 @@ app.secret_key = config['SECRET']
 
 @app.route('/')
 def index():
-    return ''
+    db = get_db()
+    return 'If this loads then you succesfully got the database!'
 
 @app.route('/Resources')
 def resources():

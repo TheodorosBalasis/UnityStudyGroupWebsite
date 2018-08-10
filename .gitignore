@@ -3,3 +3,6 @@ build/
 dist/
 usgw.egg-info/
 venv/
+
+#files
+usgw/*.conf
