@@ -10,24 +10,7 @@ app.secret_key = config['SECRET']
 @app.route('/')
 def index():
     db = get_db()
-    return 'If this loads then you succesfully got the database!'
-
-@app.route('/Resources')
-def resources():
-    return ''
-
-@app.route('/Projects')
-def projects():
-    return ''
-
-@app.route('/UnityAPI')
-def unityAPI():
-    return ''
-
-@app.route('/Resources/<uuid:resourceID>')
-def resource(resourceID):
-    return ''
-
-@app.route('/Projects/<uuid:projectID>')
-def project(projectID):
-    return ''
+    return render(
+        'base.html',
+        content='If this loads then you succesfully got the database!'
+    )
