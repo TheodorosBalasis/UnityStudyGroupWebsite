@@ -11,6 +11,17 @@ To set up your environment:
 ```bash
 git clone https://github.com/TheodorosBalasis/UnityStudyGroupWebsite.git
 cd UnityStudyGroupWebsite/usgw
-make dev
+```
+
+If you're on Windows:
+```bash
+make wdev
+```
+or on Linux:
+```bash
+make ldev
+```
+then
+```bash
 python setup.py install
 ```
