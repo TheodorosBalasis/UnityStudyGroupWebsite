@@ -5,7 +5,7 @@ from usgw.util import atoi
 config = Config()
 
 def get_db():
-    ''' returns db handle '''
+    ''' Returns DB handle. '''
     dbuser = config['DBUSER']; dbpass = config['DBPASS']
     dbtype = config['DBTYPE']; dbhost = config['DBHOST']
     dbport = config['DBPORT']; dbname = config['DBNAME']
