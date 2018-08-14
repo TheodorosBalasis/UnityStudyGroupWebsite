@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Unity Study Group</title>
+    {% block header %}
+      <title>Unity Study Group</title>
+    {% endblock %}
   </head>
   <body>
-    {{ content }}
+    {% block content %}
+      <p>Hello Jim...</p>
+    {% endblock %}
+
+    {% block footer %}
+      <p>I am foot.</p>
+    {% endblock %}
   </body>
 </html>

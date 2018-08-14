@@ -10,7 +10,4 @@ app.secret_key = config['SECRET']
 @app.route('/')
 def index():
     db = get_db()
-    return render(
-        'base.html',
-        content='If this loads then you succesfully got the database!'
-    )
+    return render('landing.html')
