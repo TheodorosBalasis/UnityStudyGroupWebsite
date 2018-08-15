@@ -11,3 +11,15 @@ app.secret_key = config['SECRET']
 def index():
     db = get_db()
     return render('landing.html')
+
+@app.route('/contact')
+def contact():
+    return render('contact.html')
+
+@app.route('/projects')
+def projects():
+    return render('projects.html')
+
+@app.route('/resources')
+def resources():
+    return render('resources.html')

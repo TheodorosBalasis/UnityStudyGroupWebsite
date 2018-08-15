@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block header %}
+  {{ super() }}
+{% endblock %}
+
+{% block content %}
+<p>Projects listing</p>
+
+<p>
+  DB get's projects in "projects" table, going to need a way to sort
+  through them
+
+  projects will have:
+  <ul>
+    <li> Project Name </li>
+    <li> Authors Name </li>
+    <li> Description </li>
+    <li> Publishers Name? (probs not)</li>
+    <li> Price </li>
+    <li> link to download/buy if we aren't selling them
+    here...otherwise we need to think about how to allow
+    purchases</li>
+  </ul>
+</p>
+
+<p>
+  if owner is logged in and on one of their project's pages, a button
+  to allow you to edit content like
+  description/title/links/price/etc..
+</p>
+{% endblock %}
