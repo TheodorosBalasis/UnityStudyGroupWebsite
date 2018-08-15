@@ -3,7 +3,7 @@ from collections import namedtuple
 
 
 class Resource:
-    def __init__(self, uuid, user_id, title, hyperlink) -> str:
+    def __init__(self, uuid, user_id, title, hyperlink):
         # type: (str, str, str, str) -> None
         self.uuid = uuid
         self.user_id = user_id
