@@ -24,12 +24,18 @@ def join():
     return render('join.html')
 
 
-def get_resources():
-    # type: () -> Collection
-    return db['resources']
+@app.route('/resources')
+def resources():
+    return render('resources.html')
 
 
-def get_resource(id):
+@app.route('/projects')
+def projects():
+    return render('projects.html')
+
+
+@app.route('/resources/<id>')
+def get_resource_by_id(id):
     # type: (str) -> Resource
     resources_collection = get_resources()
     resource = resources_collection.find_one({"uuid": id})
@@ -43,3 +49,8 @@ def post_resource():
 
 def delete_resource():
     pass
+
+
+def get_resources():
+    # type: () -> Collection
+    return db['resources']
