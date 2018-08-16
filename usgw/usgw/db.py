@@ -14,8 +14,8 @@ def get_db():
     dbport = config['DBPORT']
     dbname = config['DBNAME']
 
-    client = MongoClient('%s://%s:%s@%s' % (
-        dbtype, dbuser, dbpass, dbhost
+    client = MongoClient('%s://%s:%s@%s/%s' % (
+        dbtype, dbuser, dbpass, dbhost, dbname
     ), atoi(dbport))
 
     return client[dbname]
