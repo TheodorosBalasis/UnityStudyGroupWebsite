@@ -24,11 +24,13 @@ def index():
 
 @app.route('/resources', methods=['GET', 'POST'])
 def resources():
-    if request.method is 'GET':
+    if request.method == 'GET':
         return render('resources.html')
-    elif request.method is 'POST':
+    elif request.method == 'POST':
         # Authentication stuff here
-        return post_resource(request.form)
+        return post_resource(request)
+    else:
+        return success_json(False, 'Invalid HTTP request method.')
 
 
 @app.route('/resources/<uuid:id>', methods=['GET', 'DELETE', 'PUT'])
@@ -40,7 +42,7 @@ def resource(id):
     elif request.method is 'PUT':
         return put_resource(id, request.form)
     else:
-        return success_json(False)
+        return success_json(False, 'Invalid HTTP request method.')
 
 
 @app.route('/contact')
