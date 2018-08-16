@@ -40,7 +40,7 @@ class Resource:
 def get_resource(id):
     # type: (str) -> Resource
     resources_collection = get_resources()
-    resource = resources_collection.find_one({"_id": id})
+    resource = resources_collection.find_one({"_id": ObjectId(id)})
     resource = Resource.from_json(resource)
     return resource
 
