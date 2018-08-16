@@ -4,7 +4,7 @@ from usgw.util import success_json
 from usgw.db import get_db
 from pymongo import MongoClient
 from pymongo.collection import Collection
-from bson.objectid import ObjectId 
+from bson.objectid import ObjectId
 
 db = get_db()
 
