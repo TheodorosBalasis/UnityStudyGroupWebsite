@@ -1,9 +1,17 @@
 import json
 from collections import namedtuple
+from usgw.util import success_json
+from usgw.db import get_db
+from pymongo import MongoClient
+from pymongo.collection import Collection
+
+db = get_db()
 
 
 class Resource:
-    def __init__(self, uuid, user_id, title, hyperlink, tags):
+    requiredFields = ['user_id', 'title', 'hyperlink', 'tags']
+
+    def __init__(self, user_id, title, hyperlink, tags, uuid=0):
         # type: (str, str, str, str, List[str]) -> None
         # The UUID should be the id provided by MongoDB in the _id field.
         self.uuid = uuid
@@ -37,12 +45,26 @@ def get_resource(id):
 
 
 def post_resource(request_form):
-    # type: (dict) -> None
-    pass
+    # type: (dict) -> str
+    for key in request_form.keys:
+        if key not in Resource.requiredFields:
+            return success_json(False)
+    if len(request_form.keys) < 4:
+        return success_json(False)
+    resource = {
+        'user_id': request_form['user_id'],
+        'title': request_form['title'],
+        'hyperlink': request_form['hyperlink'],
+        'tags': request_form['tags']
+    }
+    json = json.dumps(resource)
+    resources = get_resources()
+    resources.insert_one(json)
+    return success_json(True)
 
 
 def delete_resource(id):
-    # type: (str) -> None
+    # type: (str) -> str
     resources = get_resources()
     resources.delete_one({'_id': id})
 
