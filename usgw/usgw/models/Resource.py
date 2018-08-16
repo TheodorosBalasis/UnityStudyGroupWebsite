@@ -44,23 +44,18 @@ def get_resource(id):
     return resource
 
 
-def post_resource(request_form):
+def post_resource(request):
     # type: (dict) -> str
-    for key in request_form.keys:
+    json_payload = json.dumps(request.get_json())
+    payload_dict = json.loads(str(json_payload))
+    for key in payload_dict:
         if key not in Resource.requiredFields:
-            return success_json(False)
-    if len(request_form.keys) < 4:
-        return success_json(False)
-    resource = {
-        'user_id': request_form['user_id'],
-        'title': request_form['title'],
-        'hyperlink': request_form['hyperlink'],
-        'tags': request_form['tags']
-    }
-    json = json.dumps(resource)
+            return success_json(False, 'POST body contains invalid field ' + str(key))
+    if len(payload_dict) < 4:
+        return success_json(False, 'POST body has too few fields: ' + str(len(payload_dict)))
     resources = get_resources()
-    resources.insert_one(json)
-    return success_json(True)
+    resources.insert_one(payload_dict)
+    return success_json(True, 'Request successful.')
 
 
 def delete_resource(id):
