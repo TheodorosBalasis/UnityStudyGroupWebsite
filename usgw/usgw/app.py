@@ -33,13 +33,13 @@ def resources():
         return success_json(False, 'Invalid HTTP request method.')
 
 
-@app.route('/resources/<uuid:id>', methods=['GET', 'DELETE', 'PUT'])
+@app.route('/resources/<string:id>', methods=['GET', 'DELETE', 'PUT'])
 def resource(id):
-    if request.method is 'GET':
+    if request.method == 'GET':
         return get_resource(id)
-    elif request.method is 'DELETE':
+    elif request.method == 'DELETE':
         return delete_resource(id)
-    elif request.method is 'PUT':
+    elif request.method == 'PUT':
         return put_resource(id, request.form)
     else:
         return success_json(False, 'Invalid HTTP request method.')

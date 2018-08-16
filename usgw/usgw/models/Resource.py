@@ -4,6 +4,7 @@ from usgw.util import success_json
 from usgw.db import get_db
 from pymongo import MongoClient
 from pymongo.collection import Collection
+from bson.objectid import ObjectId 
 
 db = get_db()
 
@@ -61,7 +62,10 @@ def post_resource(request):
 def delete_resource(id):
     # type: (str) -> str
     resources = get_resources()
-    resources.delete_one({'_id': id})
+    if resources.find({'_id': ObjectId(id)}).count() == 0:
+        return success_json(False, 'No document with id ' + str(id) + ' found.')
+    resources.delete_one({'_id': ObjectId(id)})
+    return success_json(True, 'Request completed successfully.')
 
 
 def put_resource(id, request_form):
