@@ -2,12 +2,12 @@ from flask import render_template as render
 from flask import request
 import flask
 import os
-import json
 
 from pymongo.collection import Collection
 
 from usgw.config import Config
 from usgw.db import get_db
+from usgw.util import success_json
 from usgw.models.Resource import Resource
 from usgw.models.Resource import get_resource, post_resource, delete_resource, put_resource
 
@@ -28,10 +28,10 @@ def resources():
         return render('resources.html')
     elif request.method is 'POST':
         # Authentication stuff here
-        post_resource(request.form)
+        return post_resource(request.form)
 
 
-@app.route('/resources/<uuid: id', methods=['GET', 'DELETE', 'PUT'])
+@app.route('/resources/<uuid:id>', methods=['GET', 'DELETE', 'PUT'])
 def resource(id):
     if request.method is 'GET':
         return get_resource(id)
@@ -40,7 +40,7 @@ def resource(id):
     elif request.method is 'PUT':
         return put_resource(id, request.form)
     else:
-        return json.dumps({"success": False})
+        return success_json(False)
 
 
 @app.route('/contact')
