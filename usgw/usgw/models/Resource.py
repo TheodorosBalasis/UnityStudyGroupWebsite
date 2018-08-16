@@ -5,6 +5,7 @@ from collections import namedtuple
 class Resource:
     def __init__(self, uuid, user_id, title, hyperlink, tags):
         # type: (str, str, str, str, List[str]) -> None
+        # The UUID should be the id provided by MongoDB in the _id field.
         self.uuid = uuid
         self.user_id = user_id
         self.title = title
