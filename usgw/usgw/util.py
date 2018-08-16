@@ -1,4 +1,5 @@
 import sys
+import json
 
 
 def trim(s):
@@ -27,3 +28,7 @@ def eprint(m):
     except:
         m = 'ERR: bad conversion'
     sys.stderr.write('\n%s\n\n' % (m,))
+
+
+def success_json(boolean):
+    json.dumps({"success": boolean})
