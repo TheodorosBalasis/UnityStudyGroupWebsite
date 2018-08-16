@@ -3,12 +3,13 @@ from collections import namedtuple
 
 
 class Resource:
-    def __init__(self, uuid, user_id, title, hyperlink):
-        # type: (str, str, str, str) -> None
+    def __init__(self, uuid, user_id, title, hyperlink, tags):
+        # type: (str, str, str, str, List[str]) -> None
         self.uuid = uuid
         self.user_id = user_id
         self.title = title
         self.hyperlink = hyperlink
+        self.tags = tags
 
     def to_json(self):
         # type: () -> str
@@ -21,5 +22,6 @@ class Resource:
         resource = Resource(named_tuple.uuid,
                             named_tuple.user_id,
                             named_tuple.title,
-                            named_tuple.hyperlink)
+                            named_tuple.hyperlink,
+                            named_tuple.tags)
         return resource
