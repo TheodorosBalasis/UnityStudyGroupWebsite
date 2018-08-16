@@ -2,12 +2,14 @@ from flask import render_template as render
 from flask import request
 import flask
 import os
+import json
 
 from pymongo.collection import Collection
 
 from usgw.config import Config
 from usgw.db import get_db
 from usgw.models.Resource import Resource
+from usgw.models.Resource import get_resource, post_resource, delete_resource, put_resource
 
 config = Config()
 app = flask.Flask(__name__)
@@ -29,6 +31,18 @@ def resources():
         post_resource(request.form)
 
 
+@app.route('/resources/<uuid: id', methods=['GET', 'DELETE', 'PUT'])
+def resource(id):
+    if request.method is 'GET':
+        return get_resource(id)
+    elif request.method is 'DELETE':
+        return delete_resource(id)
+    elif request.method is 'PUT':
+        return put_resource(id, request.form)
+    else:
+        return json.dumps({"success": False})
+
+
 @app.route('/contact')
 def contact():
     return render('contact.html')
@@ -37,37 +51,3 @@ def contact():
 @app.route('/projects')
 def projects():
     return render('projects.html')
-
-
-@app.route('/resources/<uuid:id>', methods=['GET', 'DELETE'])
-def get_resource_by_id(id):
-    # type: (str) -> Resource
-    if request.method is 'GET':
-        return get_resource(id)
-    elif request.method is 'DELETE':
-        # Authentication stuff here
-        delete_resource(id)
-
-
-def get_resource(id):
-    # type: (str) -> Resource
-    resources_collection = get_resources()
-    resource = resources_collection.find_one({"_id": id})
-    resource = Resource.from_json(resource)
-    return resource
-
-
-def post_resource(request_form):
-    # type: (dict) -> None
-    pass
-
-
-def delete_resource(id):
-    # type: (str) -> None
-    resources = get_resources()
-    resources.delete_one({'_id': id})
-
-
-def get_resources():
-    # type: () -> Collection
-    return db['resources']

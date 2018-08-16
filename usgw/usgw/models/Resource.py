@@ -26,3 +26,31 @@ class Resource:
                             named_tuple.hyperlink,
                             named_tuple.tags)
         return resource
+
+
+def get_resource(id):
+    # type: (str) -> Resource
+    resources_collection = get_resources()
+    resource = resources_collection.find_one({"_id": id})
+    resource = Resource.from_json(resource)
+    return resource
+
+
+def post_resource(request_form):
+    # type: (dict) -> None
+    pass
+
+
+def delete_resource(id):
+    # type: (str) -> None
+    resources = get_resources()
+    resources.delete_one({'_id': id})
+
+
+def put_resource(id, request_form):
+    pass
+
+
+def get_resources():
+    # type: () -> Collection
+    return db['resources']
