@@ -34,7 +34,7 @@ def projects():
     return render('projects.html')
 
 
-@app.route('/resources/<id>')
+@app.route('/resources/<uuid:id>')
 def get_resource_by_id(id):
     # type: (str) -> Resource
     resources_collection = get_resources()
