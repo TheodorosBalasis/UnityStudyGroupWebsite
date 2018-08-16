@@ -19,14 +19,14 @@ def index():
     return render('landing.html')
 
 
-@app.route('/join')
-def join():
-    return render('join.html')
-
-
 @app.route('/resources')
 def resources():
     return render('resources.html')
+
+
+@app.route('/contact')
+def contact():
+    return render('contact.html')
 
 
 @app.route('/projects')
@@ -54,3 +54,4 @@ def delete_resource():
 def get_resources():
     # type: () -> Collection
     return db['resources']
+
