@@ -1,6 +1,6 @@
 import sys
 import json
-
+from flask import jsonify
 
 def trim(s):
     try:
@@ -30,5 +30,6 @@ def eprint(m):
     sys.stderr.write('\n%s\n\n' % (m,))
 
 
-def success_json(boolean):
-    json.dumps({"success": boolean})
+def success_json(boolean, message):
+    json_string = json.dumps({'success': boolean, 'message': message})
+    return jsonify(json_string)
