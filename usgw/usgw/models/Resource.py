@@ -1,5 +1,5 @@
 import json
-from collections import namedtuple
+from flask import jsonify
 from usgw.util import success_json
 from usgw.db import get_db
 from pymongo import MongoClient
@@ -25,24 +25,34 @@ class Resource:
         # type: () -> str
         return json.dumps(self.__dict__)
 
+    def to_json_response(self):
+        return jsonify(self.to_json())
+
+    @staticmethod
     def from_json(json):
         # type: (str) -> Resource
         dict = json.loads(json)
-        named_tuple = namedtuple('Resource', dict.keys())(*dict.values())
-        resource = Resource(named_tuple.uuid,
-                            named_tuple.user_id,
-                            named_tuple.title,
-                            named_tuple.hyperlink,
-                            named_tuple.tags)
+        return Resource.from_dict(dict)
+
+    @staticmethod
+    def from_dict(dict):
+        # type: (dict) -> Resource
+        resource = Resource(str(dict['_id']),
+                            dict['user_id'],
+                            dict['title'],
+                            dict['hyperlink'],
+                            dict['tags'])
         return resource
 
 
 def get_resource(id):
     # type: (str) -> Resource
     resources_collection = get_resources()
+    if resources_collection.find({"_id": ObjectId(id)}).count() == 0:
+        return success_json(False, 'No resource found with id ' + str(id))
     resource = resources_collection.find_one({"_id": ObjectId(id)})
-    resource = Resource.from_json(resource)
-    return resource
+    resource = Resource.from_dict(resource)
+    return resource.to_json_response()
 
 
 def post_resource(request):

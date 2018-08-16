@@ -40,7 +40,7 @@ def resource(id):
     elif request.method == 'DELETE':
         return delete_resource(id)
     elif request.method == 'PUT':
-        return put_resource(id, request.form)
+        return put_resource(id, request)
     else:
         return success_json(False, 'Invalid HTTP request method.')
 
