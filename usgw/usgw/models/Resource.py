@@ -10,7 +10,8 @@ db = get_db()
 
 
 class Resource:
-    requiredFields = ['user_id', 'title', 'hyperlink', 'tags']
+    required_fields = ['user_id', 'title', 'hyperlink', 'tags']
+    fields = required_fields + ['uuid']
 
     def __init__(self, user_id, title, hyperlink, tags, uuid=0):
         # The UUID should be the id provided by MongoDB in the _id field.
@@ -33,11 +34,11 @@ class Resource:
 
     @staticmethod
     def from_dict(dict):
-        resource = Resource(str(dict['_id']),
-                            dict['user_id'],
+        resource = Resource(dict['user_id'],
                             dict['title'],
                             dict['hyperlink'],
-                            dict['tags'])
+                            dict['tags'],
+                            str(dict['_id']))
         return resource
 
 
@@ -50,7 +51,7 @@ def post_resource(request):
     json_payload = json.dumps(request.get_json())
     payload_dict = json.loads(str(json_payload))
     for key in payload_dict:
-        if key not in Resource.requiredFields:
+        if key not in Resource.required_fields:
             return success_json(False, 'POST body contains invalid field ' + str(key))
     if len(payload_dict) < 4:
         return success_json(False, 'POST body has too few fields: ' + str(len(payload_dict)))
@@ -71,7 +72,7 @@ def put_resource(id, request):
     json_payload = json.dumps(request.get_json())
     payload_dict = json.loads(str(json_payload))
     for key in payload_dict:
-        if key not in Resource.requiredFields:
+        if key not in Resource.required_fields:
             return success_json(False, 'PUT body contains invalid field ' + str(key))
     if len(payload_dict) == 0:
         return success_json(False, 'PUT body is empty.')
@@ -93,4 +94,3 @@ def get_resource_by_id(id):
     resource = resources.find_one({"_id": ObjectId(id)})
     resource = Resource.from_dict(resource)
     return resource
-
