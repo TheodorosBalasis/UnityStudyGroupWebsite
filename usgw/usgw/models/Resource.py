@@ -46,12 +46,8 @@ class Resource:
 
 
 def get_resource(id):
-    # type: (str) -> Resource
-    resources_collection = get_resources()
-    if resources_collection.find({"_id": ObjectId(id)}).count() == 0:
-        return success_json(False, 'No resource found with id ' + str(id))
-    resource = resources_collection.find_one({"_id": ObjectId(id)})
-    resource = Resource.from_dict(resource)
+    # type: (str) -> str
+    get_resource_by_id(id)
     return resource.to_json_response()
 
 
@@ -85,3 +81,13 @@ def put_resource(id, request_form):
 def get_resources():
     # type: () -> Collection
     return db['resources']
+
+
+def get_resource_by_id(id):
+    # type (str) -> Resource
+    resources_collection = get_resources()
+    if resources_collection.find({"_id": ObjectId(id)}).count() == 0:
+        return success_json(False, 'No resource found with id ' + str(id))
+    resource = resources_collection.find_one({"_id": ObjectId(id)})
+    resource = Resource.from_dict(resource)
+    return resource
