@@ -1,10 +1,9 @@
 from flask import render_template as render
-from flask import request
+from flask import request, redirect, url_for
 import flask
 import os
 
 from pymongo.collection import Collection
-
 from usgw.config import Config
 from usgw.db import get_db
 from usgw.util import success_json
@@ -52,4 +51,22 @@ def contact():
 
 @app.route('/projects')
 def projects():
-    return render('projects.html')
+    db = get_db()
+
+    data = []
+    for doc in db.projects.find({}):
+        data.append(doc)
+        
+    return render('projects.html', projects=data)
+
+@app.route('/newproj')
+def genproj():
+    db = get_db()
+    db.projects.insert_one({
+        'author'      : 'Squirrelzar',
+        'project'     : 'Crappy Game Name',
+        'description' : 'This is the worst game you could ever imagine!',
+        'link'        : 'www.google.com',
+    })
+
+    return redirect(url_for('projects'))

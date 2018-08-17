@@ -29,4 +29,24 @@
   to allow you to edit content like
   description/title/links/price/etc..
 </p>
+
+<hr>
+
+<table align="center">
+  <tr>
+    <th>Project</th>
+    <th>Author</th>
+    <th>Description</th>
+    <th>Link</th>
+  </tr>
+{% for proj in projects %}
+<tr>
+  <td>{{ proj['project'] }}</td>
+  <td>{{ proj['author'] }}</td>
+  <td>{{ proj['description'] }}</td>
+  <td><a href="{{ proj['link'] }}">Link</a></td>
+</tr>
+{% endfor %}
+</table>
+
 {% endblock %}
