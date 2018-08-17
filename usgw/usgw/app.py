@@ -6,9 +6,10 @@ import os
 from pymongo.collection import Collection
 from usgw.config import Config
 from usgw.db import get_db
-from usgw.util import success_json
+from usgw.util import success_json, eprint
 from usgw.models.Resource import Resource
 from usgw.models.Resource import get_resource, post_resource, delete_resource, put_resource
+from bson.objectid import ObjectId
 
 config = Config()
 app = flask.Flask(__name__)
@@ -59,14 +60,22 @@ def projects():
         
     return render('projects.html', projects=data)
 
-@app.route('/newproj')
-def genproj():
+@app.route('/project/<string:idx>')
+def project(idx):
     db = get_db()
-    db.projects.insert_one({
-        'author'      : 'Squirrelzar',
-        'project'     : 'Crappy Game Name',
-        'description' : 'This is the worst game you could ever imagine!',
-        'link'        : 'www.google.com',
-    })
 
-    return redirect(url_for('projects'))
+    proj = db.projects.find_one({'_id' : ObjectId(idx)})
+    eprint(proj)
+    return render('project.html', project = proj)
+
+# @app.route('/newproj')
+# def genproj():
+#     db = get_db()
+#     db.projects.insert_one({
+#         'author'      : 'mrkagouris',
+#         'project'     : 'Better Game Name',
+#         'description' : 'This is the most okay game you could imagine',
+#         'link'        : 'https://www.google.com',
+#     })
+
+#     return redirect(url_for('projects'))

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block header %}
+  {{ super() }}
+{% endblock %}
+
+{% block content %}
+<p>ProjectPage</p>
+
+<p>Name: <b>{{ project['project'] }}</b></p>
+<p>Author: <b>{{ project['author'] }}</b> (link to user page)</p>
+<p>Description: <b>{{ project['description'] }}</b></p>
+<br />
+<a href="{{ project['link'] }}" target="_blank">Get the game! (dummy link)</a>
+
+<br /><br /><br /><br />
+<p> Want to add in some images or videos about game?</p>
+{% endblock %}

@@ -36,15 +36,11 @@
   <tr>
     <th>Project</th>
     <th>Author</th>
-    <th>Description</th>
-    <th>Link</th>
   </tr>
 {% for proj in projects %}
 <tr>
-  <td>{{ proj['project'] }}</td>
+  <td><a href="/project/{{ proj['_id'] }}">{{ proj['project'] }}</a></td>
   <td>{{ proj['author'] }}</td>
-  <td>{{ proj['description'] }}</td>
-  <td><a href="{{ proj['link'] }}">Link</a></td>
 </tr>
 {% endfor %}
 </table>
