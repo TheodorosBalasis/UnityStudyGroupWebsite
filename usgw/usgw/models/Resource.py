@@ -52,7 +52,6 @@ def get_resource(id):
 
 
 def post_resource(request):
-    # type: (dict) -> str
     json_payload = json.dumps(request.get_json())
     payload_dict = json.loads(str(json_payload))
     for key in payload_dict:
@@ -74,8 +73,19 @@ def delete_resource(id):
     return success_json(True, 'Request completed successfully.')
 
 
-def put_resource(id, request_form):
-    pass
+def put_resource(id, request):
+    json_payload = json.dumps(request.get_json())
+    payload_dict = json.loads(str(json_payload))
+    for key in payload_dict:
+        if key not in Resource.requiredFields:
+            return success_json(False, 'PUT body contains invalid field ' + str(key))
+    if len(payload_dict) == 0:
+        return success_json(False, 'PUT body is empty.')
+    resources = get_resources()
+    if resources.find({"_id": ObjectId(id)}).count() == 0:
+        return success_json(False, 'No resource found with id ' + str(id))
+    document = resources.update_one({'_id': ObjectId(id)}, {'$set': payload_dict})
+    return success_json(True, 'Request successful.')
 
 
 def get_resources():
@@ -85,9 +95,10 @@ def get_resources():
 
 def get_resource_by_id(id):
     # type (str) -> Resource
-    resources_collection = get_resources()
-    if resources_collection.find({"_id": ObjectId(id)}).count() == 0:
+    resources = get_resources()
+    if resources.find({"_id": ObjectId(id)}).count() == 0:
         return success_json(False, 'No resource found with id ' + str(id))
-    resource = resources_collection.find_one({"_id": ObjectId(id)})
+    resource = resources.find_one({"_id": ObjectId(id)})
     resource = Resource.from_dict(resource)
     return resource
+
