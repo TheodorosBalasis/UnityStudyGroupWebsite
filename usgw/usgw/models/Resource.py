@@ -13,7 +13,6 @@ class Resource:
     requiredFields = ['user_id', 'title', 'hyperlink', 'tags']
 
     def __init__(self, user_id, title, hyperlink, tags, uuid=0):
-        # type: (str, str, str, str, List[str]) -> None
         # The UUID should be the id provided by MongoDB in the _id field.
         self.uuid = uuid
         self.user_id = user_id
@@ -22,7 +21,6 @@ class Resource:
         self.tags = tags
 
     def to_json(self):
-        # type: () -> str
         return json.dumps(self.__dict__)
 
     def to_json_response(self):
@@ -30,13 +28,11 @@ class Resource:
 
     @staticmethod
     def from_json(json):
-        # type: (str) -> Resource
         dict = json.loads(json)
         return Resource.from_dict(dict)
 
     @staticmethod
     def from_dict(dict):
-        # type: (dict) -> Resource
         resource = Resource(str(dict['_id']),
                             dict['user_id'],
                             dict['title'],
@@ -46,7 +42,6 @@ class Resource:
 
 
 def get_resource(id):
-    # type: (str) -> str
     get_resource_by_id(id)
     return resource.to_json_response()
 
@@ -65,7 +60,6 @@ def post_resource(request):
 
 
 def delete_resource(id):
-    # type: (str) -> str
     resources = get_resources()
     if resources.find({'_id': ObjectId(id)}).count() == 0:
         return success_json(False, 'No document with id ' + str(id) + ' found.')
@@ -89,12 +83,10 @@ def put_resource(id, request):
 
 
 def get_resources():
-    # type: () -> Collection
     return db['resources']
 
 
 def get_resource_by_id(id):
-    # type (str) -> Resource
     resources = get_resources()
     if resources.find({"_id": ObjectId(id)}).count() == 0:
         return success_json(False, 'No resource found with id ' + str(id))
