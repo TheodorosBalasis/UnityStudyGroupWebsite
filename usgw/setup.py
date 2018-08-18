@@ -15,6 +15,7 @@ setuptools.setup(
     install_requires=[
         'flask',
         'pymongo',
+        'flask_bootstrap'
     ],
     entry_points={'console_scripts':[
         'usgw-config=usgw.bin.config:main',
