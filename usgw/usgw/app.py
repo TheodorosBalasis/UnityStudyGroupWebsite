@@ -1,7 +1,8 @@
-from flask import render_template as render
-from flask import request
 import flask
 import os
+
+from flask import render_template as render
+from flask import request
 
 from pymongo.collection import Collection
 
