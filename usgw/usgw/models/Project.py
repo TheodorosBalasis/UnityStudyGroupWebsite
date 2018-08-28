@@ -70,7 +70,7 @@ def put_project(id, request):
     json_payload = json.dumps(request.get_json())
     payload_dict = json.loads(str(json_payload))
     for key in payload_dict:
-        if key not in project.required_fields:
+        if key not in Project.required_fields:
             return success_json(False, 'PUT body contains invalid field ' + str(key))
     if len(payload_dict) == 0:
         return success_json(False, 'PUT body is empty.')
