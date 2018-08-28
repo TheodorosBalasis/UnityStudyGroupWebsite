@@ -49,7 +49,7 @@ def post_project(request):
     json_payload = json.dumps(request.get_json())
     payload_dict = json.loads(str(json_payload))
     for key in payload_dict:
-        if key not in project.required_fields:
+        if key not in Project.required_fields:
             return success_json(False, 'POST body contains invalid field ' + str(key))
     if len(payload_dict) < 4:
         return success_json(False, 'POST body has too few fields: ' + str(len(payload_dict)))
