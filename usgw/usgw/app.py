@@ -10,6 +10,8 @@ from usgw.db import get_db
 from usgw.util import success_json
 from usgw.models.Resource import Resource
 from usgw.models.Resource import get_resource, post_resource, delete_resource, put_resource
+from usgw.models.Project import Project
+from usgw.models.Project import get_project, post_project, delete_project, put_project
 
 config = Config()
 app = flask.Flask(__name__)
@@ -50,6 +52,24 @@ def contact():
     return render('contact.html')
 
 
-@app.route('/projects')
+@app.route('/projects', methods=['GET', 'POST'])
 def projects():
-    return render('projects.html')
+    if request.method == 'GET':
+        return render('projects.html')
+    elif request.method == 'POST':
+        # Authentication stuff here
+        return post_project(request)
+    else:
+        return success_json(False, 'Invalid HTTP request method.')
+
+
+@app.route('/projects/<string:id>', methods=['GET', 'DELETE', 'PUT'])
+def project(id):
+    if request.method == 'GET':
+        return get_project(id)
+    elif request.method == 'DELETE':
+        return delete_project(id)
+    elif request.method == 'PUT':
+        return put_project(id, request)
+    else:
+        return success_json(False, 'Invalid HTTP request method.')
