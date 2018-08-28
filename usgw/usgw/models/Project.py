@@ -91,5 +91,5 @@ def get_project_by_id(id):
     if projects.find({"_id": ObjectId(id)}).count() == 0:
         return success_json(False, 'No project found with id ' + str(id))
     project = projects.find_one({"_id": ObjectId(id)})
-    project = project.from_dict(project)
+    project = Project.from_dict(project)
     return project
