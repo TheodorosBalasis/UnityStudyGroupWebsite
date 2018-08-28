@@ -43,7 +43,7 @@ class Resource:
 
 
 def get_resource(id):
-    get_resource_by_id(id)
+    resource = get_resource_by_id(id)
     return resource.to_json_response()
 
 
