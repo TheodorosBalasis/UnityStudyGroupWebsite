@@ -53,7 +53,7 @@ def post_resource(request):
     for key in payload_dict:
         if key not in Resource.required_fields:
             return success_json(False, 'POST body contains invalid field ' + str(key))
-    if len(payload_dict) < 4:
+    if len(payload_dict) < len(Resource.required_fields):
         return success_json(False, 'POST body has too few fields: ' + str(len(payload_dict)))
     resources = get_resources()
     resources.insert_one(payload_dict)
