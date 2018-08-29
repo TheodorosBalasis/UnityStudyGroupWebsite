@@ -6,6 +6,8 @@ from pymongo import MongoClient
 from pymongo.collection import Collection
 from bson.objectid import ObjectId
 
+from ModelUtilities import to_json_response
+
 db = get_db()
 
 
@@ -20,12 +22,6 @@ class Resource:
         self.title = title
         self.hyperlink = hyperlink
         self.tags = tags
-
-    def to_json(self):
-        return json.dumps(self.__dict__)
-
-    def to_json_response(self):
-        return jsonify(self.to_json())
 
     @staticmethod
     def from_json(json):
@@ -44,7 +40,7 @@ class Resource:
 
 def get_resource(id):
     resource = get_resource_by_id(id)
-    return resource.to_json_response()
+    return to_json_response(resource)
 
 
 def post_resource(request):
@@ -83,12 +79,8 @@ def put_resource(id, request):
     return success_json(True, 'Request successful.')
 
 
-def get_resources():
-    return db['resources']
-
-
 def get_resource_by_id(id):
-    resources = get_resources()
+    resources = db['resources']
     if resources.find({"_id": ObjectId(id)}).count() == 0:
         return success_json(False, 'No resource found with id ' + str(id))
     resource = resources.find_one({"_id": ObjectId(id)})

@@ -6,6 +6,8 @@ from pymongo import MongoClient
 from pymongo.collection import Collection
 from bson.objectid import ObjectId
 
+from ModelUtilities import to_json_response
+
 db = get_db()
 
 
@@ -19,12 +21,6 @@ class Project:
         self.user_id = user_id
         self.title = title
         self.body = body
-
-    def to_json(self):
-        return json.dumps(self.__dict__)
-
-    def to_json_response(self):
-        return jsonify(self.to_json())
 
     @staticmethod
     def from_json(json):
@@ -42,7 +38,7 @@ class Project:
 
 def get_project(id):
     project = get_project_by_id(id)
-    return project.to_json_response()
+    return to_json_response(project)
 
 
 def post_project(request):
@@ -82,12 +78,8 @@ def put_project(id, request):
     return success_json(True, 'Request successful.')
 
 
-def get_projects():
-    return db['projects']
-
-
 def get_project_by_id(id):
-    projects = get_projects()
+    projects = db['projects']
     if projects.find({"_id": ObjectId(id)}).count() == 0:
         return success_json(False, 'No project found with id ' + str(id))
     project = projects.find_one({"_id": ObjectId(id)})
