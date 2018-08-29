@@ -5,22 +5,21 @@ from usgw.db import get_db
 from pymongo import MongoClient
 from pymongo.collection import Collection
 from bson.objectid import ObjectId
-
 from ModelUtilities import to_json_response
 
 db = get_db()
 
 
-class Project:
+class Project(object):
     required_fields = ['user_id', 'title', 'body']
     fields = required_fields + ['uuid']
 
-    def __init__(self, user_id, title, body, uuid=0):
+    def __init__(self, user_id, title, body, uuid=None):
         # The UUID should be the id provided by MongoDB in the _id field.
-        self.uuid = uuid
         self.user_id = user_id
         self.title = title
         self.body = body
+        self.uuid = uuid
 
     @staticmethod
     def from_json(json):

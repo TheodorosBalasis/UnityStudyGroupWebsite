@@ -5,23 +5,22 @@ from usgw.db import get_db
 from pymongo import MongoClient
 from pymongo.collection import Collection
 from bson.objectid import ObjectId
-
 from ModelUtilities import to_json_response
 
 db = get_db()
 
 
-class Resource:
+class Resource(object):
     required_fields = ['user_id', 'title', 'hyperlink', 'tags']
     fields = required_fields + ['uuid']
 
-    def __init__(self, user_id, title, hyperlink, tags, uuid=0):
+    def __init__(self, user_id, title, hyperlink, tags, uuid=None):
         # The UUID should be the id provided by MongoDB in the _id field.
-        self.uuid = uuid
         self.user_id = user_id
         self.title = title
         self.hyperlink = hyperlink
         self.tags = tags
+        self.uuid = uuid
 
     @staticmethod
     def from_json(json):
@@ -30,6 +29,9 @@ class Resource:
 
     @staticmethod
     def from_dict(dict):
+        for key in dict:
+            if key not in Resource.fields:
+                raise ValueError('Invalid field ' + str(key))
         resource = Resource(dict['user_id'],
                             dict['title'],
                             dict['hyperlink'],
