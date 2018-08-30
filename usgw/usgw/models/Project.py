@@ -6,6 +6,7 @@ from pymongo import MongoClient
 from pymongo.collection import Collection
 from bson.objectid import ObjectId
 from ModelUtilities import to_json_response
+from ModelUtilities import from_dict
 
 db = get_db()
 
@@ -25,14 +26,6 @@ class Project(object):
     def from_json(json):
         dict = json.loads(json)
         return project.from_dict(dict)
-
-    @staticmethod
-    def from_dict(dict):
-        project = Project(dict['user_id'],
-                          dict['title'],
-                          dict['body'],
-                          str(dict['_id']))
-        return project
 
 
 def get_project(id):
@@ -82,5 +75,5 @@ def get_project_by_id(id):
     if projects.find({"_id": ObjectId(id)}).count() == 0:
         return success_json(False, 'No project found with id ' + str(id))
     project = projects.find_one({"_id": ObjectId(id)})
-    project = Project.from_dict(project)
+    project = from_dict(project, Project)
     return project
