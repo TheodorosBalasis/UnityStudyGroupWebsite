@@ -13,14 +13,14 @@ db = get_db()
 
 class Project(object):
     required_fields = ['user_id', 'title', 'body']
-    fields = required_fields + ['uuid']
+    fields = required_fields + ['_id']
 
-    def __init__(self, user_id, title, body, uuid=None):
+    def __init__(self, user_id, title, body, _id=None):
         # The UUID should be the id provided by MongoDB in the _id field.
         self.user_id = user_id
         self.title = title
         self.body = body
-        self.uuid = uuid
+        self._id = _id
 
     @staticmethod
     def from_json(json):
