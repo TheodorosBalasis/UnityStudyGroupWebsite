@@ -6,38 +6,27 @@ from pymongo import MongoClient
 from pymongo.collection import Collection
 from bson.objectid import ObjectId
 from ModelUtilities import to_json_response
+from ModelUtilities import from_dict
 
 db = get_db()
 
 
 class Resource(object):
     required_fields = ['user_id', 'title', 'hyperlink', 'tags']
-    fields = required_fields + ['uuid']
+    fields = required_fields + ['_id']
 
-    def __init__(self, user_id, title, hyperlink, tags, uuid=None):
-        # The UUID should be the id provided by MongoDB in the _id field.
+    def __init__(self, user_id, title, hyperlink, tags, _id=None):
+        # The _id should be the id provided by MongoDB in the _id field.
         self.user_id = user_id
         self.title = title
         self.hyperlink = hyperlink
         self.tags = tags
-        self.uuid = uuid
+        self._id = _id
 
     @staticmethod
     def from_json(json):
         dict = json.loads(json)
-        return Resource.from_dict(dict)
-
-    @staticmethod
-    def from_dict(dict):
-        for key in dict:
-            if key not in Resource.fields:
-                raise ValueError('Invalid field ' + str(key))
-        resource = Resource(dict['user_id'],
-                            dict['title'],
-                            dict['hyperlink'],
-                            dict['tags'],
-                            str(dict['_id']))
-        return resource
+        return from_dict(dict, Resource)
 
 
 def get_resource(id):
@@ -75,7 +64,7 @@ def put_resource(id, request):
     if len(payload_dict) == 0:
         return success_json(False, 'PUT body is empty.')
     resources = get_resources()
-    if resources.find({"_id": ObjectId(id)}).count() == 0:
+    if resources.find({'_id': ObjectId(id)}).count() == 0:
         return success_json(False, 'No resource found with id ' + str(id))
     document = resources.update_one({'_id': ObjectId(id)}, {'$set': payload_dict})
     return success_json(True, 'Request successful.')
@@ -83,8 +72,9 @@ def put_resource(id, request):
 
 def get_resource_by_id(id):
     resources = db['resources']
-    if resources.find({"_id": ObjectId(id)}).count() == 0:
+    if resources.find({'_id': ObjectId(id)}).count() == 0:
         return success_json(False, 'No resource found with id ' + str(id))
-    resource = resources.find_one({"_id": ObjectId(id)})
-    resource = Resource.from_dict(resource)
+    resource = resources.find_one({'_id': ObjectId(id)})
+    resource['_id'] = str(resource['_id'])
+    resource = from_dict(resource, Resource)
     return resource
