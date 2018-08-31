@@ -1,9 +1,5 @@
-import json
-from flask import jsonify
 from usgw.util import success_json
 from usgw.db import get_db
-from pymongo import MongoClient
-from pymongo.collection import Collection
 from bson.objectid import ObjectId
 from ModelUtilities import to_json_response, from_dict, from_json
 
@@ -15,7 +11,7 @@ class Project(object):
     fields = required_fields + ['_id']
 
     def __init__(self, user_id, title, body, _id=None):
-        # The UUID should be the id provided by MongoDB in the _id field.
+        # The _id should be the id provided by MongoDB in the _id field.
         self.user_id = user_id
         self.title = title
         self.body = body
@@ -32,26 +28,25 @@ def get_project_by_id(id):
     if projects.find({"_id": ObjectId(id)}).count() == 0:
         return success_json(False, 'No project found with id ' + str(id))
     project = projects.find_one({"_id": ObjectId(id)})
-    project['_id'] = str(project['_id'])
+    project['_id'] = str(project['_id'])  # ObjectID type objects cannot be serialized to JSON.
     project = from_dict(project, Project)
     return project
 
 
 def post_project(request):
-    json_payload = json.dumps(request.get_json())
-    payload_dict = json.loads(str(json_payload))
-    for key in payload_dict:
+    payload_dictionary = request.get_json()
+    for key in payload_dictionary:
         if key not in Project.required_fields:
             return success_json(False, 'POST body contains invalid field ' + str(key))
-    if len(payload_dict) < len(Project.required_fields):
-        return success_json(False, 'POST body has too few fields: ' + str(len(payload_dict)))
-    projects = get_projects()
-    projects.insert_one(payload_dict)
+    if len(payload_dictionary) < len(Project.required_fields):
+        return success_json(False, 'POST body has too few fields: ' + str(len(payload_dictionary)))
+    projects = db['projects']
+    projects.insert_one(payload_dictionary)
     return success_json(True, 'Request successful.')
 
 
 def delete_project(id):
-    projects = get_projects()
+    projects = db['projects']
     if projects.find({'_id': ObjectId(id)}).count() == 0:
         return success_json(False, 'No document with id ' + str(id) + ' found.')
     projects.delete_one({'_id': ObjectId(id)})
@@ -59,16 +54,14 @@ def delete_project(id):
 
 
 def put_project(id, request):
-    json_payload = json.dumps(request.get_json())
-    payload_dict = json.loads(str(json_payload))
-    for key in payload_dict:
+    payload_dictionary = request.get_json()
+    for key in payload_dictionary:
         if key not in Project.required_fields:
             return success_json(False, 'PUT body contains invalid field ' + str(key))
-    if len(payload_dict) == 0:
+    if len(payload_dictionary) == 0:
         return success_json(False, 'PUT body is empty.')
-    projects = get_projects()
+    projects = db['projects']
     if projects.find({"_id": ObjectId(id)}).count() == 0:
         return success_json(False, 'No project found with id ' + str(id))
-    document = projects.update_one(
-        {'_id': ObjectId(id)}, {'$set': payload_dict})
+    document = projects.update_one({'_id': ObjectId(id)}, {'$set': payload_dictionary})
     return success_json(True, 'Request successful.')

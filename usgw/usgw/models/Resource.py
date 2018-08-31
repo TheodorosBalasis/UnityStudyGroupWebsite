@@ -1,9 +1,5 @@
-import json
-from flask import jsonify
 from usgw.util import success_json
 from usgw.db import get_db
-from pymongo import MongoClient
-from pymongo.collection import Collection
 from bson.objectid import ObjectId
 from ModelUtilities import to_json_response, from_dict, from_json
 
@@ -33,26 +29,25 @@ def get_resource_by_id(id):
     if resources.find({'_id': ObjectId(id)}).count() == 0:
         return success_json(False, 'No resource found with id ' + str(id))
     resource = resources.find_one({'_id': ObjectId(id)})
-    resource['_id'] = str(resource['_id'])
+    resource['_id'] = str(resource['_id'])  # ObjectID type objects cannot be serialized to JSON.
     resource = from_dict(resource, Resource)
     return resource
 
 
 def post_resource(request):
-    json_payload = json.dumps(request.get_json())
-    payload_dict = json.loads(str(json_payload))
-    for key in payload_dict:
+    payload_dictionary = request.get_json()
+    for key in payload_dictionary:
         if key not in Resource.required_fields:
             return success_json(False, 'POST body contains invalid field ' + str(key))
-    if len(payload_dict) < len(Resource.required_fields):
-        return success_json(False, 'POST body has too few fields: ' + str(len(payload_dict)))
-    resources = get_resources()
-    resources.insert_one(payload_dict)
+    if len(payload_dictionary) < len(Resource.required_fields):
+        return success_json(False, 'POST body has too few fields: ' + str(len(payload_dictionary)))
+    resources = db['resources']
+    resources.insert_one(payload_dictionary)
     return success_json(True, 'Request successful.')
 
 
 def delete_resource(id):
-    resources = get_resources()
+    resources = db['resources']
     if resources.find({'_id': ObjectId(id)}).count() == 0:
         return success_json(False, 'No document with id ' + str(id) + ' found.')
     resources.delete_one({'_id': ObjectId(id)})
@@ -60,15 +55,14 @@ def delete_resource(id):
 
 
 def put_resource(id, request):
-    json_payload = json.dumps(request.get_json())
-    payload_dict = json.loads(str(json_payload))
-    for key in payload_dict:
+    payload_dictionary = request.get_json()
+    for key in payload_dictionary:
         if key not in Resource.required_fields:
             return success_json(False, 'PUT body contains invalid field ' + str(key))
-    if len(payload_dict) == 0:
+    if len(payload_dictionary) == 0:
         return success_json(False, 'PUT body is empty.')
-    resources = get_resources()
+    resources = db['resources']
     if resources.find({'_id': ObjectId(id)}).count() == 0:
         return success_json(False, 'No resource found with id ' + str(id))
-    document = resources.update_one({'_id': ObjectId(id)}, {'$set': payload_dict})
+    document = resources.update_one({'_id': ObjectId(id)}, {'$set': payload_dictionary})
     return success_json(True, 'Request successful.')
