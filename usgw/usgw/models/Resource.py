@@ -5,8 +5,7 @@ from usgw.db import get_db
 from pymongo import MongoClient
 from pymongo.collection import Collection
 from bson.objectid import ObjectId
-from ModelUtilities import to_json_response
-from ModelUtilities import from_dict
+from ModelUtilities import to_json_response, from_dict, from_json
 
 db = get_db()
 
@@ -23,15 +22,20 @@ class Resource(object):
         self.tags = tags
         self._id = _id
 
-    @staticmethod
-    def from_json(json):
-        dict = json.loads(json)
-        return from_dict(dict, Resource)
-
 
 def get_resource(id):
     resource = get_resource_by_id(id)
     return to_json_response(resource)
+
+
+def get_resource_by_id(id):
+    resources = db['resources']
+    if resources.find({'_id': ObjectId(id)}).count() == 0:
+        return success_json(False, 'No resource found with id ' + str(id))
+    resource = resources.find_one({'_id': ObjectId(id)})
+    resource['_id'] = str(resource['_id'])
+    resource = from_dict(resource, Resource)
+    return resource
 
 
 def post_resource(request):
@@ -68,13 +72,3 @@ def put_resource(id, request):
         return success_json(False, 'No resource found with id ' + str(id))
     document = resources.update_one({'_id': ObjectId(id)}, {'$set': payload_dict})
     return success_json(True, 'Request successful.')
-
-
-def get_resource_by_id(id):
-    resources = db['resources']
-    if resources.find({'_id': ObjectId(id)}).count() == 0:
-        return success_json(False, 'No resource found with id ' + str(id))
-    resource = resources.find_one({'_id': ObjectId(id)})
-    resource['_id'] = str(resource['_id'])
-    resource = from_dict(resource, Resource)
-    return resource

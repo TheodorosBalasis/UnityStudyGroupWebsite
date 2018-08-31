@@ -5,8 +5,7 @@ from usgw.db import get_db
 from pymongo import MongoClient
 from pymongo.collection import Collection
 from bson.objectid import ObjectId
-from ModelUtilities import to_json_response
-from ModelUtilities import from_dict
+from ModelUtilities import to_json_response, from_dict, from_json
 
 db = get_db()
 
@@ -22,15 +21,20 @@ class Project(object):
         self.body = body
         self._id = _id
 
-    @staticmethod
-    def from_json(json):
-        dict = json.loads(json)
-        return project.from_dict(dict)
-
 
 def get_project(id):
     project = get_project_by_id(id)
     return to_json_response(project)
+
+
+def get_project_by_id(id):
+    projects = db['projects']
+    if projects.find({"_id": ObjectId(id)}).count() == 0:
+        return success_json(False, 'No project found with id ' + str(id))
+    project = projects.find_one({"_id": ObjectId(id)})
+    project['_id'] = str(project['_id'])
+    project = from_dict(project, Project)
+    return project
 
 
 def post_project(request):
@@ -68,13 +72,3 @@ def put_project(id, request):
     document = projects.update_one(
         {'_id': ObjectId(id)}, {'$set': payload_dict})
     return success_json(True, 'Request successful.')
-
-
-def get_project_by_id(id):
-    projects = db['projects']
-    if projects.find({"_id": ObjectId(id)}).count() == 0:
-        return success_json(False, 'No project found with id ' + str(id))
-    project = projects.find_one({"_id": ObjectId(id)})
-    project['_id'] = str(project['_id'])
-    project = from_dict(project, Project)
-    return project
