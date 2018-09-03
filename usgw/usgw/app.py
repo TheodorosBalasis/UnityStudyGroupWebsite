@@ -1,16 +1,10 @@
 from flask import render_template as render
 from flask import request
 import flask
-import os
-
-from pymongo.collection import Collection
 
 from usgw.config import Config
-from usgw.db import get_db
 from usgw.util import success_json
-from usgw.models.Resource import Resource
 from usgw.models.Resource import get_resource, post_resource, delete_resource, put_resource
-from usgw.models.Project import Project
 from usgw.models.Project import get_project, post_project, delete_project, put_project
 
 config = Config()
@@ -20,7 +14,6 @@ app.secret_key = config['SECRET']
 
 @app.route('/')
 def index():
-    db = get_db()
     return render('landing.html')
 
 
