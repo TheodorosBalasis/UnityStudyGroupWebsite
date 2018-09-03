@@ -17,6 +17,9 @@ class Project(object):
         self.body = body
         self._id = _id
 
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
 
 def get_project(id):
     project = get_project_by_id(id)
