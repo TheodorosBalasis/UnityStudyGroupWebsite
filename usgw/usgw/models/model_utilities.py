@@ -5,9 +5,6 @@ from flask import jsonify
 
 def to_json_response(model):
     '''Converts an object to a valid JSON response payload.'''
-    print '-'*50
-    print str(jsonify(json.dumps(model.__dict__)))
-    print '-'*50
     return jsonify(json.dumps(model.__dict__))
 
 
