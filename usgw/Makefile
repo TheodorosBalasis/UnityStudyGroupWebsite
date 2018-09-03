@@ -14,11 +14,15 @@ wdev:
 	@mkdir -p venv/etc
 	@cp local.conf venv/etc/usgw.conf
 
-wtest: wdev
+wserver:
 	@echo "==> starting dev server on http://localhost:5000"
 	@FLASK_APP=usgw/app.py \
         FLASK_DEBUG=1 \
         ./venv/Scripts/flask run --host=0.0.0.0 --port=5000
+
+wtest:
+	wdev
+	wserver
 ################################################
 
 
@@ -33,11 +37,15 @@ ldev:
 	@mkdir -p venv/etc
 	@cp local.conf venv/etc/usgw.conf
 
-ltest: ldev
+lserver:
 	@echo "==> starting dev server on http://localhost:5000"
 	@FLASK_APP=usgw/app.py \
         FLASK_DEBUG=1 \
         ./venv/bin/flask run --host=0.0.0.0 --port=5000
+
+ltest:
+	ldev
+	lserver
 
 ################################################
 
