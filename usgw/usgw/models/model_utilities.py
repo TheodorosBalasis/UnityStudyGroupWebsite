@@ -5,6 +5,9 @@ from flask import jsonify
 
 def to_json_response(model):
     '''Converts an object to a valid JSON response payload.'''
+    print '-'*50
+    print str(jsonify(json.dumps(model.__dict__)))
+    print '-'*50
     return jsonify(json.dumps(model.__dict__))
 
 
@@ -17,14 +20,14 @@ def from_dict(dictionary, target_type):
     fields = None
     try:
         fields = inspect.getargspec(target_type.__init__).args
+    except TypeError:
+        raise TypeError('Type ' + target_type.__name__ + ' is not a heap type.')
     except AttributeError:
         raise AttributeError('Type ' + target_type.__name__ + ' has no constructor.')
     fields = fields[1:len(fields)]
     for key in dictionary:
         if key not in fields:
             raise ValueError('Invalid field ' + str(key))
-        elif type(key) != str and type(key) != unicode:
-            raise ValueError('Dictionary keys must be strings.')
     new_object = type('temp', (object,), {})()
     new_object.__class__ = target_type
     for key in dictionary:
