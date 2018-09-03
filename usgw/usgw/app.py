@@ -4,8 +4,8 @@ import flask
 
 from usgw.config import Config
 from usgw.util import success_json
-from usgw.models.Resource import get_resource, post_resource, delete_resource, put_resource
-from usgw.models.Project import get_project, post_project, delete_project, put_project
+from usgw.models.resource import get_resource, post_resource, delete_resource, put_resource
+from usgw.models.project import get_project, post_project, delete_project, put_project
 
 config = Config()
 app = flask.Flask(__name__)

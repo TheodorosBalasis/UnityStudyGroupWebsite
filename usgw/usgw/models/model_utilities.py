@@ -4,10 +4,12 @@ from flask import jsonify
 
 
 def to_json_response(model):
+    '''Converts an object to a valid JSON response payload.'''
     return jsonify(json.dumps(model.__dict__))
 
 
 def from_dict(dictionary, target_type):
+    '''Converts a dictionary to an arbitrary heap type object.'''
     if type(dictionary) != dict:
         raise TypeError('Dictionary argument is not a dictionary.')
     if type(target_type) != type:
@@ -34,6 +36,7 @@ def from_dict(dictionary, target_type):
 
 
 def from_json(json_input, target_type):
+    '''Converts a JSON input string to an object of an arbitrary heap type.'''
     if type(json_input) != str and type(json_input) != unicode:
         raise TypeError('JSON argument needs to be a string.')
     if type(target_type) != type:

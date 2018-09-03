@@ -1,7 +1,7 @@
 from usgw.util import success_json
 from usgw.db import get_db
 from bson.objectid import ObjectId
-from ModelUtilities import to_json_response, from_dict, from_json
+from model_utilities import to_json_response, from_dict, from_json
 
 db = get_db()
 
