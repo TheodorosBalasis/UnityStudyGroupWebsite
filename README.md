@@ -39,4 +39,4 @@ python setup.py install
 
 To start the server run `make wserver` or `make lserver` for Windows and Linux respectively.
 
-To run unit tests, run `make wunit` or `make lunit` for Windows and Linux respectively.
+To run unit tests, run `make tests`.

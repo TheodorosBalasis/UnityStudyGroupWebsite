@@ -23,9 +23,6 @@ wserver:
 wtest:
 	wdev
 	wserver
-
-wunit:
-	python -m unittest discover usgw/tests
 ################################################
 
 
@@ -49,10 +46,10 @@ lserver:
 ltest:
 	ldev
 	lserver
-
-lunit:
-	python -m unittest discover usgw/tests
 ################################################
+
+tests:
+	python -m unittest discover usgw/tests
 
 
 clean:
