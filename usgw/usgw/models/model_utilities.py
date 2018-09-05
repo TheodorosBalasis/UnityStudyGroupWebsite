@@ -1,5 +1,6 @@
 import json
 import inspect
+import types
 from flask import jsonify
 
 
@@ -10,15 +11,15 @@ def to_json_response(model):
 
 def from_dict(dictionary, target_type):
     '''Converts a dictionary to an arbitrary heap type object.'''
-    if type(dictionary) != dict:
+    if not isinstance(dictionary, dict):
         raise TypeError('Dictionary argument is not a dictionary.')
-    if type(target_type) != type:
+    if not isinstance(target_type, (type, types.ClassType)):
         raise TypeError('Target type argument is not a type.')
     fields = None
     try:
         fields = inspect.getargspec(target_type.__init__).args
     except TypeError:
-        raise TypeError('Type ' + target_type.__name__ + ' is not a heap type.')
+        raise TypeError('Type ' + target_type.__name__ + ' is not a heap type or has no constructor.')
     except AttributeError:
         raise AttributeError('Type ' + target_type.__name__ + ' has no constructor.')
     fields = fields[1:len(fields)]
@@ -37,10 +38,8 @@ def from_dict(dictionary, target_type):
 
 def from_json(json_input, target_type):
     '''Converts a JSON input string to an object of an arbitrary heap type.'''
-    if type(json_input) != str and type(json_input) != unicode:
+    if not isinstance(json_input, (str, unicode)):
         raise TypeError('JSON argument needs to be a string.')
-    if type(target_type) != type:
-        raise TypeError('Target type argument is not a type.')
     dictionary = None
     try:
         dictionary = json.loads(json_input)
