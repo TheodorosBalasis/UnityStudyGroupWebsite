@@ -13,6 +13,7 @@ wdev:
 	@./venv/Scripts/pip install -e .
 	@mkdir -p venv/etc
 	@cp local.conf venv/etc/usgw.conf
+	@python setup.py install
 
 wserver:
 	@echo "==> starting dev server on http://localhost:5000"
@@ -36,6 +37,7 @@ ldev:
 	@./venv/bin/pip install -e .
 	@mkdir -p venv/etc
 	@cp local.conf venv/etc/usgw.conf
+	@python setup.py install
 
 lserver:
 	@echo "==> starting dev server on http://localhost:5000"
@@ -49,7 +51,7 @@ ltest:
 ################################################
 
 tests:
-	python -m unittest discover usgw/tests
+	@python -m unittest discover usgw/tests
 
 
 clean:
