@@ -15,22 +15,14 @@ def from_dict(dictionary, target_type):
         raise TypeError('Dictionary argument is not a dictionary.')
     if not isinstance(target_type, (type, types.ClassType)):
         raise TypeError('Target type argument is not a type.')
-    fields = None
-    try:
-        fields = inspect.getargspec(target_type.__init__).args
-    except TypeError:
-        raise TypeError('Type ' + target_type.__name__ + ' is not a heap type or has no constructor.')
-    except AttributeError:
-        raise AttributeError('Type ' + target_type.__name__ + ' has no constructor.')
-    fields = fields[1:len(fields)]
-    for key in dictionary:
-        if key not in fields:
-            raise ValueError('Invalid field ' + str(key))
+    fields = get_fields(target_type)
+    if not is_dict_instance(dictionary, target_type):
+        raise ValueError('Dictionary argument contains keys that do not map to the target type\'s fields')
     new_object = type('temp', (object,), {})()
     new_object.__class__ = target_type
+    type_methods = get_methods(target_type)
     for key in dictionary:
         setattr(new_object, key, dictionary[key])
-    type_methods = inspect.getmembers(type, predicate=inspect.ismethod)
     for method in type_methods:
         setattr(new_object, method[0], method[1])
     return new_object
@@ -39,10 +31,40 @@ def from_dict(dictionary, target_type):
 def from_json(json_input, target_type):
     '''Converts a JSON input string to an object of an arbitrary heap type.'''
     if not isinstance(json_input, (str, unicode)):
-        raise TypeError('JSON argument needs to be a string.')
+        raise TypeError('JSON argument is not a string or unicode string.')
     dictionary = None
     try:
         dictionary = json.loads(json_input)
     except ValueError:
         raise ValueError('JSON input argument is an invalid JSON string.')
     return from_dict(dictionary, target_type)
+
+
+def is_dict_instance(dictionary, target_type):
+    '''Checks if the input dictionary is a serialized instance of the target type.'''
+    if not isinstance(dictionary, (dict,)):
+        raise TypeError('Dictionary argument is not a dictionary.')
+    if not isinstance(target_type, (type, types.ClassType)):
+        raise TypeError('Target type argument is not a type.')
+    fields = get_fields(target_type)
+    for key in dictionary:
+        if key not in fields:
+            return False
+    return True
+
+
+def get_fields(target_type):
+    '''Returns the instance fields of the target type based on its constructor.'''
+    fields = None
+    try:
+        fields = inspect.getargspec(target_type.__init__).args
+    except TypeError:
+        raise TypeError('Type ' + target_type.__name__ + ' is not a heap type or has no constructor.')
+    except AttributeError:
+        raise AttributeError('Type ' + target_type.__name__ + ' has no constructor.')
+    return fields[1:len(fields)]
+
+
+def get_methods(target_type):
+    '''Returns the instance methods of the target type.'''
+    return inspect.getmembers(type, predicate=inspect.ismethod)
