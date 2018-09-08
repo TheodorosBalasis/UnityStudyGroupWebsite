@@ -6,7 +6,7 @@ class TestType(object):
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
-    def instance_method():
+    def instance_method(self):
         pass
 
     @staticmethod
