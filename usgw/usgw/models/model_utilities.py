@@ -15,16 +15,15 @@ def from_dict(dictionary, target_type):
         raise TypeError('Dictionary argument is not a dictionary.')
     if not isinstance(target_type, (type, types.ClassType)):
         raise TypeError('Target type argument is not a type.')
-    fields = get_fields(target_type)
     if not is_dict_instance(dictionary, target_type):
         raise ValueError('Dictionary argument contains keys that do not map to the target type\'s fields')
     new_object = type('temp', (object,), {})()
     new_object.__class__ = target_type
-    type_methods = get_methods(target_type)
+    methods = get_methods(target_type)
+    for method in methods:
+        types.MethodType(method[1], new_object, target_type)
     for key in dictionary:
         setattr(new_object, key, dictionary[key])
-    for method in type_methods:
-        setattr(new_object, method[0], method[1])
     return new_object
 
 
