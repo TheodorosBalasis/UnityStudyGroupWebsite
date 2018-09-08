@@ -88,5 +88,9 @@ def get_fields(target_type):
 
 
 def get_methods(target_type):
-    '''Returns the instance methods of the target type.'''
-    return inspect.getmembers(type, predicate=inspect.ismethod)
+    '''Returns the instance methods of the target type.\n
+        Does not return dunder methods.'''
+    if not isinstance(target_type, (type, types.ClassType)):
+        raise TypeError('Target type is not a type.')
+    methods = inspect.getmembers(target_type, predicate=inspect.ismethod)
+    return filter((lambda x: x[0][0:2] != '__'), methods)
