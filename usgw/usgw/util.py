@@ -2,6 +2,7 @@ import sys
 import json
 from flask import jsonify
 
+
 def trim(s):
     try:
         return ' '.join(s.split())
@@ -10,7 +11,7 @@ def trim(s):
 
 
 def atoi(s):
-    # convert object s to int without exception
+    '''Convert object s to int without exception.'''
     try:
         return int(s)
     except:
@@ -18,11 +19,12 @@ def atoi(s):
 
 
 def atob(s):
-    # convert object s to bool without exception
+    '''Convert object s to bool without exception.'''
     return bool(atoi(s))
 
 
 def eprint(m):
+    '''Print to the standard error output.'''
     try:
         m = str(m)
     except:
