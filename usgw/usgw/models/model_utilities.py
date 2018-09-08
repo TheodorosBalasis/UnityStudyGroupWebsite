@@ -41,7 +41,7 @@ def from_json(json_input, target_type):
 
 
 def is_dict_instance(dictionary, target_type):
-    '''Checks if the input dictionary is a serialized instance of the target type.'''
+    '''Checks if the input dictionary is a serialized instance or partial instance of the target type.'''
     if not isinstance(dictionary, (dict,)):
         raise TypeError('Dictionary argument is not a dictionary.')
     if not isinstance(target_type, (type, types.ClassType)):
@@ -51,6 +51,28 @@ def is_dict_instance(dictionary, target_type):
         if key not in fields:
             return False
     return True
+
+
+def is_dict_instance_strict(dictionary, target_type):
+    '''Checks if the input dictionary is a serialized instance of the target type, containing all its fields.'''
+    if len(dictionary) == len(get_fields(target_type)):
+        return is_dict_instance(dictionary, target_type)
+    else:
+        return False
+
+
+def get_invalid_field(dictionary, target_type):
+    '''Returns the first key that is an invalid field for the target type.'''
+    if not isinstance(dictionary, (dict,)):
+        raise TypeError('Dictionary argument is not a dictionary.')
+    if not isinstance(target_type, (type, types.ClassType)):
+        raise TypeError('Target type argument is not a type.')
+    if is_dict_instance(dictionary, target_type):
+        raise ValueError('Dictionary contains no invalid fields')
+    fields = get_fields(target_type)
+    for key in dictionary:
+        if key not in fields:
+            return key
 
 
 def get_fields(target_type):
