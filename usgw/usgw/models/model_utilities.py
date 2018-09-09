@@ -66,12 +66,11 @@ def get_invalid_field(dictionary, target_type):
         raise TypeError('Dictionary argument is not a dictionary.')
     if not isinstance(target_type, (type, types.ClassType)):
         raise TypeError('Target type argument is not a type.')
-    if is_dict_instance(dictionary, target_type):
-        raise ValueError('Dictionary contains no invalid fields')
     fields = get_fields(target_type)
     for key in dictionary:
         if key not in fields:
             return key
+    return None
 
 
 def get_fields(target_type):
