@@ -44,28 +44,44 @@ class TestFromJSON(unittest.TestCase):
         self.assertEquals(test_instance, output_instance)
 
 
-class TestIsInstance(unittest.TestCase):
+class TestIsDictInstance(unittest.TestCase):
     def test_errors(self):
-        pass
+        with self.assertRaises(TypeError):
+            is_dict_instance('Not a dictionary', TestType)
+        with self.assertRaises(TypeError):
+            is_dict_instance({}, 'Not a type')
 
     def test_output(self):
-        pass
+        test_dict = {}
+        self.assertTrue(is_dict_instance(test_dict, TestType))
+        test_dict['test_field'] = None
+        self.assertTrue(is_dict_instance(test_dict, TestType))
+        test_dict['invalid_field'] = None
+        self.assertFalse(is_dict_instance(test_dict, TestType))
 
 
-class TestIsInstanceStrict(unittest.TestCase):
-    def test_errors(self):
-        pass
-
+class TestIsDictInstanceStrict(unittest.TestCase):
     def test_output(self):
-        pass
+        test_dict = {}
+        self.assertFalse(is_dict_instance_strict(test_dict, TestType))
+        test_dict['invalid_field'] = None
+        test_dict.pop('invalid_field')
+        test_dict['test_field'] = None
+        self.assertTrue(is_dict_instance_strict(test_dict, TestType))
 
 
 class TestGetInvalidField(unittest.TestCase):
     def test_errors(self):
-        pass
+        with self.assertRaises(TypeError):
+            get_invalid_field('Not a dictionary', TestType)
+        with self.assertRaises(TypeError):
+            get_invalid_field({}, 'Not a type')
 
     def test_output(self):
-        pass
+        test_dict = {'test_field': None}
+        self.assertEquals(get_invalid_field(test_dict, TestType), None)
+        test_dict['invalid_field'] = None
+        self.assertEquals(get_invalid_field(test_dict, TestType), 'invalid_field')
 
 
 class TestTypeGets(unittest.TestCase):
