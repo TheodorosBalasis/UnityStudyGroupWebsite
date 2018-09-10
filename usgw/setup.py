@@ -15,8 +15,9 @@ setuptools.setup(
     install_requires=[
         'flask',
         'pymongo',
+        'Flask-OAuthlib'
     ],
-    entry_points={'console_scripts':[
+    entry_points={'console_scripts': [
         'usgw-config=usgw.bin.config:main',
     ]},
 )
