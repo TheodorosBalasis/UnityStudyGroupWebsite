@@ -2,6 +2,8 @@ from flask import render_template as render
 from flask import request
 import flask
 
+from flask_oauthlib.provider import OAuth2Provider
+
 from usgw.config import Config
 from usgw.util import success_json
 from usgw.models.resource import get_resource, post_resource, delete_resource, put_resource
@@ -9,6 +11,7 @@ from usgw.models.project import get_project, post_project, delete_project, put_p
 
 config = Config()
 app = flask.Flask(__name__)
+oauth = OAuth2Provider(app)
 app.secret_key = config['SECRET']
 
 
