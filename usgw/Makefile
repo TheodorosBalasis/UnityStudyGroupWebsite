@@ -21,9 +21,7 @@ wserver:
         FLASK_DEBUG=1 \
         ./venv/Scripts/flask run --host=0.0.0.0 --port=5000
 
-wtest:
-	wdev
-	wserver
+wtest: wdev wserver
 ################################################
 
 
@@ -45,9 +43,7 @@ lserver:
         FLASK_DEBUG=1 \
         ./venv/bin/flask run --host=0.0.0.0 --port=5000
 
-ltest:
-	ldev
-	lserver
+ltest: ldev lserver
 ################################################
 
 tests:
