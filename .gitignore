@@ -6,3 +6,4 @@ venv/
 
 #files
 usgw/*.conf
+*.pyc
