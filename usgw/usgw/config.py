@@ -1,6 +1,8 @@
-import os, sys
+import os
+import sys
 from collections import Mapping
 from usgw.util import trim
+
 
 class Config(Mapping):
     def __init__(self):
