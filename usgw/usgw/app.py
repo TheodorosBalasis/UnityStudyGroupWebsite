@@ -1,8 +1,6 @@
+import flask
 from flask import render_template as render
 from flask import request
-import flask
-
-from flask_oauthlib.client import OAuth
 
 from usgw.config import Config
 from usgw.util import success_json
