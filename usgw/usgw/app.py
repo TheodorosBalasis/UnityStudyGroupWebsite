@@ -12,7 +12,6 @@ from usgw.models.project import get_project, post_project, delete_project, put_p
 config = Config()
 app = flask.Flask(__name__)
 app.secret_key = config['SECRET']
-oauth = OAuth(app)
 
 
 @app.route('/')
