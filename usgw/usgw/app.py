@@ -1,6 +1,6 @@
 import flask
 from flask import render_template as render
-from flask import request
+from flask import request, redirect
 
 from usgw.config import Config
 from usgw.util import success_json
@@ -66,3 +66,20 @@ def project(id):
         return put_project(id, request)
     else:
         return success_json(False, 'Invalid HTTP request method.')
+
+
+@app.route('/authredirecturl', methods=['GET'])
+def get_auth_redirect_url():
+    targetURL = 'https://slack.com/oauth/authorize'
+    targetURL += '?'
+    targetURL += 'client_id=' + config['CLIENT_ID']
+    targetURL += '&' + 'scope=' + 'identity.basic'
+    targetURL += '&' + 'team=' + config['TEAM_ID']
+    return targetURL
+
+
+@app.route('/loginredirect', methods=['GET'])
+def log_in():
+    code = request.args.get('code')
+    origin_url = request.args.get('state')
+    return redirect(origin_url)
