@@ -1,3 +1,4 @@
+import requests
 import flask
 from flask import render_template as render
 from flask import request, redirect
@@ -68,7 +69,24 @@ def project(id):
         return success_json(False, 'Invalid HTTP request method.')
 
 
-@app.route('/authredirecturl', methods=['GET'])
+@app.route('/loginredirect', methods=['GET'])
+def log_in():
+    code = request.args.get('code')
+    origin_url = request.args.get('state')
+    get_params = {'client_id': config['CLIENT_ID'],
+                  'client_secret': config['CLIENT_SECRET'],
+                  'code': code,
+                  'redirect_uri': request.host + '/tokenreception'}
+    requests.get('https://slack.com/api/oauth.access', get_params)
+    return redirect(origin_url)
+
+
+@app.route('/tokenreception', methods=['POST'])
+def receive_token():
+    response = request.get_json()
+
+
+@app.endpoint('/authredirecturl')
 def get_auth_redirect_url():
     targetURL = 'https://slack.com/oauth/authorize'
     targetURL += '?'
@@ -76,10 +94,3 @@ def get_auth_redirect_url():
     targetURL += '&' + 'scope=' + 'identity.basic'
     targetURL += '&' + 'team=' + config['TEAM_ID']
     return targetURL
-
-
-@app.route('/loginredirect', methods=['GET'])
-def log_in():
-    code = request.args.get('code')
-    origin_url = request.args.get('state')
-    return redirect(origin_url)
