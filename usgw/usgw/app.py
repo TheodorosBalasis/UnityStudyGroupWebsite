@@ -69,7 +69,7 @@ def project(id):
         return success_json(False, 'Invalid HTTP request method.')
 
 
-@app.route('/loginredirect', methods=['GET'])
+@app.route('/slack/auth', methods=['GET'])
 def log_in():
     code = request.args.get('code')
     origin_url = request.args.get('state')
@@ -86,7 +86,7 @@ def receive_token():
     response = request.get_json()
 
 
-@app.endpoint('/authredirecturl')
+@app.route('/authredirecturl', methods=['GET'])
 def get_auth_redirect_url():
     targetURL = 'https://slack.com/oauth/authorize'
     targetURL += '?'
