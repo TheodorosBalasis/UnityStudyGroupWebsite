@@ -4,5 +4,7 @@ dist/
 usgw.egg-info/
 venv/
 
+.vscode/
+
 #files
-usgw/*.conf
+*.conf
