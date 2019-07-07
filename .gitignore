@@ -5,6 +5,8 @@ usgw.egg-info/
 venv/
 
 .vscode/
+.vagrant/
 
 #files
 *.conf
+*.log
