@@ -23,6 +23,7 @@ vagrant up
 vagrant ssh
 cd app
 make init
+. venv/bin/activate
 ```
 
 ## Usage
@@ -30,3 +31,5 @@ make init
 To start the development server, run `make start`.
 
 To run unit tests, run `make test`.
+
+To deactivate the virtual environment, run `deactivate`.
