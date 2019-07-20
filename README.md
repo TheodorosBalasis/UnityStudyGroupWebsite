@@ -27,6 +27,6 @@ make init
 
 ## Usage
 
-To start the development server, run `make run`.
+To start the development server, run `make start`.
 
 To run unit tests, run `make test`.
