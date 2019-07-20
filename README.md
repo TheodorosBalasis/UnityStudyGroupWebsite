@@ -4,23 +4,29 @@ The full backend and frontend of the Unity Study Group's website.
 
 ## Setup
 
-### Bash
+### Prerequisites
 
-If you're using Git Bash on Windows you will need to manually install `make` such as detailed [here](https://gist.github.com/evanwill/0207876c3243bbb6863e65ec5dc3f058).
+You will need to install:
+* Virtualbox
+* Vagrant
+
+Vagrant is used to ensure a consistent development environment regardless of host operating system.
+
+### Project Setup
 
 To set up your environment:
 
-```bash
+```sh
 git clone https://github.com/TheodorosBalasis/UnityStudyGroupWebsite.git
-cd UnityStudyGroupWebsite/usgw
+cd UnityStudyGroupWebsite
+vagrant up
+vagrant ssh
+cd app
+make init
 ```
-
-then run `make wdev` or `make ldev` if you're on Windows or Linux respectively.
 
 ## Usage
 
-### Bash
+To start the development server, run `make run`.
 
-To start the server run `make wserver` or `make lserver` for Windows and Linux respectively.
-
-To run unit tests, run `make tests`.
+To run unit tests, run `make test`.
