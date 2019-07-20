@@ -3,6 +3,7 @@ build/
 dist/
 usgw.egg-info/
 venv/
+**/__pycache__/
 
 .vscode/
 .vagrant/
