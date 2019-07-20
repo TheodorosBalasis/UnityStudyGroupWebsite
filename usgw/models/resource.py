@@ -1,8 +1,8 @@
 from usgw.util import success_json
 from usgw.db import get_db
 from bson.objectid import ObjectId
-from model_utilities import to_json_response, from_dict, from_json
-from model_utilities import is_dict_instance, is_dict_instance_strict, get_invalid_field
+from .model_utilities import to_json_response, from_dict, from_json
+from .model_utilities import is_dict_instance, is_dict_instance_strict, get_invalid_field
 
 db = get_db()
 
