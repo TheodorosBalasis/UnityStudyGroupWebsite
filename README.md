@@ -17,8 +17,8 @@ Vagrant is used to ensure a consistent development environment regardless of hos
 To set up your environment:
 
 ```sh
-git clone https://github.com/TheodorosBalasis/UnityStudyGroupWebsite.git
-cd UnityStudyGroupWebsite
+git clone https://github.com/TheodorosBalasis/unity-study-group-website.git
+cd unity-study-group-website
 vagrant up
 vagrant ssh
 cd app

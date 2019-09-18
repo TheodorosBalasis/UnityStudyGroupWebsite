@@ -1,7 +1,11 @@
 .PHONY: init start run test clean relclean
 
 all:
-	@echo Read Makefile for useful targets.
+	@echo "- init: Initialize the development environment."
+	@echo "- start: Start up the development server on port 5000."
+	@echo "- test: Execute all unit tests."
+	@echo "- clean: Clean working files."
+	@echo "- relclean: Remove initialized development environment."
 
 init:
 	@echo '==> setting up dev virtualenv'
