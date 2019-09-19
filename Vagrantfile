@@ -26,7 +26,13 @@ Vagrant.configure("2") do |config|
   # Start up Docker images.
   config.vm.provision "docker" do |d|
     # Set the credentials to usgw/usgw and forward the default Postgres port.
-    d.run "postgres",
-      args: "-e POSTGRES_USER=usgw -e POSTGRES_PASSWORD=usgw -p 5432:5432"
+    d.run "postgres", args: "-e POSTGRES_USER=usgw -e POSTGRES_PASSWORD=usgw -p 5432:5432"
   end
+
+  # Initialize Postgres to the app's schema.
+  config.vm.provision "shell",
+    inline: "
+      export PGPASSWORD=usgw
+      docker cp /home/vagrant/app/schema.sql postgres:/docker-entrypoint-initdb.d/
+    "
 end
