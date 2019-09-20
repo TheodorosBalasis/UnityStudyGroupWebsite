@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
   # Port for Postgres.
   config.vm.network "forwarded_port", guest: 5432, host: 5432
 
-  config.vm.synced_folder "./", "/home/vagrant/app"
+  config.vm.synced_folder "./app/", "/home/vagrant/app/"
 
   # Provision packages to the VM.
   config.vm.provision "shell", path: "bootstrap.sh"
