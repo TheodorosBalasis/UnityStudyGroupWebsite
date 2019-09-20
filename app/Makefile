@@ -12,7 +12,11 @@ init:
 	@if [ ! -d venv ]; then virtualenv --always-copy venv; fi
 	@./venv/bin/pip install -e .
 	@mkdir -p venv/etc
-	@cp local.conf venv/etc/usgw.conf
+	@if [ -f local.conf ]; then \
+		cp local.conf venv/etc/usgw.conf; \
+	else \
+		touch local.conf; \
+	fi
 	@. venv/bin/activate; \
 	python3 setup.py install
 
