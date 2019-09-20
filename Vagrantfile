@@ -20,6 +20,12 @@ Vagrant.configure("2") do |config|
   # Provision packages to the VM.
   config.vm.provision "shell", path: "bootstrap.sh"
 
+  # Initialize the app.
+  config.vm.provision "shell", inline: "
+    cd /home/vagrant/app/
+    make init
+  "
+
   # Provision Docker images to the VM.
   config.vm.provision "docker", images: ["postgres"]
 

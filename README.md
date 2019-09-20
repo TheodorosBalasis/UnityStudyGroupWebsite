@@ -22,7 +22,6 @@ cd unity-study-group-website
 vagrant up
 vagrant ssh
 cd app
-make init
 . venv/bin/activate
 ```
 
