@@ -1,37 +1,28 @@
-import sys
-import json
+from sys import stderr
+from json import dumps
 from flask import jsonify
+from flask import Response
 
 
-def trim(s):
-    try:
-        return ' '.join(s.split())
-    except:
-        return s
-
-
-def atoi(s):
+def atoi(obj: object) -> int:
     '''Convert object s to int without exception.'''
     try:
-        return int(s)
+        return int(obj)
     except:
         return 0
 
 
-def atob(s):
+def atob(obj: object) -> bool:
     '''Convert object s to bool without exception.'''
-    return bool(atoi(s))
+    return bool(atoi(obj))
 
 
-def eprint(m):
+def error_print(message: str) -> None:
     '''Print to the standard error output.'''
-    try:
-        m = str(m)
-    except:
-        m = 'ERR: bad conversion'
-    sys.stderr.write('\n%s\n\n' % (m,))
+    stderr.write('\n%s\n\n' % (message,))
 
 
-def success_json(boolean, message):
-    json_string = json.dumps({'success': boolean, 'message': message})
+def json_response(successful: bool, message: str) -> Response:
+    '''Generate a JSON response with a success and message fields.'''
+    json_string = dumps({'success': successful, 'message': message})
     return jsonify(json_string)

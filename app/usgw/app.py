@@ -3,7 +3,7 @@ from flask import request
 import flask
 
 from usgw.config import Config
-from usgw.util import success_json
+from usgw.util import json_response
 from usgw.models.resource import get_resource, post_resource, delete_resource, put_resource
 from usgw.models.project import get_project, post_project, delete_project, put_project
 
@@ -25,7 +25,7 @@ def resources():
         # Authentication stuff here
         return post_resource(request)
     else:
-        return success_json(False, 'Invalid HTTP request method.')
+        return json_response(False, 'Invalid HTTP request method.')
 
 
 @app.route('/resources/<string:id>', methods=['GET', 'DELETE', 'PUT'])
@@ -37,7 +37,7 @@ def resource(id):
     elif request.method == 'PUT':
         return put_resource(id, request)
     else:
-        return success_json(False, 'Invalid HTTP request method.')
+        return json_response(False, 'Invalid HTTP request method.')
 
 
 @app.route('/contact')
@@ -53,7 +53,7 @@ def projects():
         # Authentication stuff here
         return post_project(request)
     else:
-        return success_json(False, 'Invalid HTTP request method.')
+        return json_response(False, 'Invalid HTTP request method.')
 
 
 @app.route('/projects/<string:id>', methods=['GET', 'DELETE', 'PUT'])
@@ -65,4 +65,4 @@ def project(id):
     elif request.method == 'PUT':
         return put_project(id, request)
     else:
-        return success_json(False, 'Invalid HTTP request method.')
+        return json_response(False, 'Invalid HTTP request method.')
