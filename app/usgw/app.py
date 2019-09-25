@@ -7,7 +7,7 @@ from usgw.util import json_response
 from usgw.models.resource import get_resource, post_resource, delete_resource, put_resource
 from usgw.models.project import get_project, post_project, delete_project, put_project
 
-config = Config()
+config = Config('usgw.conf')
 app = flask.Flask(__name__)
 app.secret_key = config['SECRET']
 
