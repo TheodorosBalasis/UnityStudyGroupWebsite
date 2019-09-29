@@ -2,12 +2,12 @@
 
 ## Tables
 
-* credential(id: serial, slack_id: char_9)
-* token(id: serial, credential_id: credential->id, token: char_30, valid: boolean)
-* session_cookie(token: token->token, cookie: char_32)
-* resource(id: serial, owner_id: credential->id, title: text, link: text, description: text)
-* article(id: serial, owner_id: credential->id, title: text, body: text)
-* project(id: serial, owner_id: credential->id, title: text, description: text)
+* credential(**id**: serial, slack_id: char_9)
+* token(**id**: serial, credential_id: credential->id, token: char_30, valid: boolean)
+* session_cookie(**token**: token->id, cookie: char_32)
+* resource(**id**: serial, owner_id: credential->id, title: text, link: text, description: text)
+* article(**id**: serial, owner_id: credential->id, title: text, body: text)
+* project(**id**: serial, owner_id: credential->id, title: text, description: text)
 
 ### Credentials
 
