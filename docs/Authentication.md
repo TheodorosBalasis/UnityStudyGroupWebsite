@@ -14,6 +14,10 @@ The access token has the minimal scope of `users.profile:read` as the only infor
 
 A unique secure HttpOnly session cookie is stored to keep a user signed into a specific account, and then read by the application server on each client request to retrieve user info such as display name and avatar image. This cookie is bound to the access token received when the user logs in via Slack.
 
+### Cookie Generation
+
+The session cookie is generated as a SHA256 hash of the time of login, the source IP address, and a secret salt stored on the backend.
+
 ### Cookie Expiration
 
 Cookies and their corresponding access token expire when the user actively logs out, or the access token is revoked. When the application server attempts to use a revoked access token it will then invalidate the session cookie associated with it, and if an invalidated session cookie is sent to the application server it will tell the client to delete the cookie. Following cookie invalidation on the backend and deletion on the client, the binding between the session cookie and the access token is erased from the database.
