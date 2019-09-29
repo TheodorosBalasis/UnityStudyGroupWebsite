@@ -5,9 +5,9 @@
 * credential(**id**: serial, slack_id: char_9)
 * token(**id**: serial, credential_id: credential->id, token: char_30, valid: boolean)
 * session_cookie(**token**: token->id, cookie: char_32)
-* resource(**id**: serial, owner_id: credential->id, title: text, link: text, description: text)
-* article(**id**: serial, owner_id: credential->id, title: text, body: text)
-* project(**id**: serial, owner_id: credential->id, title: text, description: text)
+* resource(**id**: serial, owner_id: credential->id, title: varchar_200, link: varchar_2500, description: varchar_5000)
+* article(**id**: serial, owner_id: credential->id, title: varchar_200, body: varchar_25000)
+* project(**id**: serial, owner_id: credential->id, title: varchar_200, description: varchar_5000)
 
 ### Credentials
 
